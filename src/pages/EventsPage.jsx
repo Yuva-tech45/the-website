@@ -1,6 +1,7 @@
 
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
+import FogBackground from '../components/ui/FogBackground';
 import {
     ArrowLeft,
     ArrowUpRight,
@@ -57,12 +58,13 @@ const EventsPage = () => {
 
     return (
         <motion.div
+        
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.35 }}
-            className="min-h-screen bg-black px-4 pb-20 pt-28 text-white sm:px-6 lg:px-8"
-        >
+            className="relative min-h-screen overflow-hidden bg-black px-4 pb-20 pt-28 text-white sm:px-6 lg:px-8"
+        >   <FogBackground />
             <div className="relative z-10 mx-auto max-w-6xl">
                 {!selectedEvent ? (
                     <>
@@ -108,47 +110,61 @@ const EventsPage = () => {
                         </div>
 
                         <div className="grid gap-5">
-                            {visibleEvents.map((item, index) => (
-                                <motion.button
-                                    key={item.id}
-                                    type="button"
-                                    onClick={() => setSelectedEvent(item)}
-                                    initial={{ opacity: 0, y: 16 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: index * 0.08 }}
-                                    whileHover={{ y: -4 }}
-                                    className="group w-full rounded-2xl border border-white/10 bg-[#101010] p-6 text-left transition-colors hover:border-white/30 sm:p-8"
-                                >
-                                    <div className="flex items-start justify-between gap-4">
-                                        <div>
-                                            <p className="mb-3 text-xs uppercase tracking-[0.2em] text-gray-500">
-                                                {formatMonth(item.month)}
-                                            </p>
-                                            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">
-                                                {item.title}
-                                            </h2>
-                                            <p className="mt-3 max-w-2xl leading-relaxed text-gray-400">
-                                                {item.description}
-                                            </p>
-                                        </div>
+                            
+{visibleEvents.map((item, index) => (
+    <motion.button
+        key={item.id}
+        type="button"
+        onClick={() => setSelectedEvent(item)}
+        initial={{ opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        whileHover={{
+            y: -8,
+            scale: 1.02,
+            boxShadow: "0px 12px 35px 2px rgba(255, 255, 255, 0.2)",
+            zIndex: 20,
+        }}
+        transition={{
+            delay: index * 0.08,
+            y: { type: "spring", stiffness: 300, damping: 25 },
+            scale: { type: "spring", stiffness: 300, damping: 25 },
+            boxShadow: { duration: 0.25 },
+        }}
+        className="group w-full rounded-2xl border border-white/10 bg-[#101010] p-6 text-left shadow-xl transition-colors duration-300 hover:border-white/20 sm:p-8"
+    >
+        <div className="flex items-start justify-between gap-4">
+            <div>
+                <p className="mb-3 text-xs uppercase tracking-[0.2em] text-gray-500">
+                    {formatMonth(item.month)}
+                </p>
 
-                                        <span className="rounded-full border border-white/15 p-3 text-gray-400 transition group-hover:bg-white group-hover:text-black">
-                                            <ArrowUpRight size={20} />
-                                        </span>
-                                    </div>
+                <h2 className="text-3xl font-semibold tracking-tight transition-transform duration-300 group-hover:translate-x-1 sm:text-4xl">
+                    {item.title}
+                </h2>
 
-                                    <div className="mt-6 flex flex-wrap gap-2">
-                                        {item.takeaways.map((takeaway) => (
-                                            <span
-                                                key={takeaway}
-                                                className="rounded-full bg-white/[0.06] px-3 py-2 text-xs text-gray-300"
-                                            >
-                                                {takeaway}
-                                            </span>
-                                        ))}
-                                    </div>
-                                </motion.button>
-                            ))}
+                <p className="mt-3 max-w-2xl leading-relaxed text-gray-400 transition-colors duration-300 group-hover:text-gray-200">
+                    {item.description}
+                </p>
+            </div>
+
+            <span className="rounded-full border border-white/15 p-3 text-gray-400 transition-all duration-300 group-hover:bg-white group-hover:text-black">
+                <ArrowUpRight size={20} />
+            </span>
+        </div>
+
+        <div className="mt-6 flex flex-wrap gap-2">
+            {item.takeaways.map((takeaway) => (
+                <span
+                    key={takeaway}
+                    className="rounded-full bg-neutral-800 px-3 py-2 text-xs text-gray-300 transition-all duration-300 group-hover:bg-neutral-700 group-hover:text-white"
+                >
+                    {takeaway}
+                </span>
+            ))}
+        </div>
+    </motion.button>
+))}
+
 
                             {visibleEvents.length === 0 && (
                                 <p className="rounded-2xl border border-white/10 p-8 text-gray-400">
