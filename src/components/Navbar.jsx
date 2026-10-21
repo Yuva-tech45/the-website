@@ -20,6 +20,7 @@ const Navbar = ({ onContactClick }) => {
         { name: 'Domains', href: '/domains' },
         { name: 'Events', href: '/events' },
         { name: 'Tools', href: '/tools' },
+        { name: 'Gallery', href: '/gallery' },
     ];
 
     return (
