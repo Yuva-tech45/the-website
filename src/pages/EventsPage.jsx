@@ -16,6 +16,7 @@ const events = [
         id: 'findathon',
         title: 'Findathon',
         month: '2026-07',
+        date: '2026-07-18',
         description:
             'Explore unfamiliar technology stacks, build full-stack solutions, and turn ideas into working projects.',
         takeaways: [
@@ -41,6 +42,12 @@ const formatMonth = (value) => {
 
     return `${monthName} '${year.slice(-2)}`;
 };
+const formatDate = (value) =>
+    new Date(`${value}T12:00:00`).toLocaleDateString('en-US', {
+        month: 'long',
+        day: 'numeric',
+        year: 'numeric',
+    });
 
 const EventsPage = () => {
     const monthOptions = [
@@ -179,6 +186,7 @@ const EventsPage = () => {
                         initial={{ opacity: 0, x: 12 }}
                         animate={{ opacity: 1, x: 0 }}
                         className="mx-auto max-w-4xl"
+                        
                     >
                         <button
                             type="button"
@@ -191,7 +199,7 @@ const EventsPage = () => {
 
                         <p className="mb-4 flex items-center gap-2 text-sm uppercase tracking-[0.2em] text-gray-500">
                             <CalendarDays size={16} />
-                            {formatMonth(selectedEvent.month)}
+                            {formatDate(selectedEvent.date)}
                         </p>
 
                         <h1 className="text-5xl font-bold tracking-tighter sm:text-7xl">
@@ -203,41 +211,45 @@ const EventsPage = () => {
                             {selectedEvent.description}
                         </p>
 
-                        <div className="mt-12 grid gap-8 md:grid-cols-2">
-                            <div className="rounded-2xl border border-white/10 bg-[#101010] p-6 sm:p-8">
-                                <h2 className="mb-6 flex items-center gap-3 text-xl font-semibold">
-                                    <Sparkles size={19} />
-                                    Key takeaways
-                                </h2>
-                                <div className="flex flex-wrap gap-2">
-                                    {selectedEvent.takeaways.map((item) => (
-                                        <span
-                                            key={item}
-                                            className="rounded-full border border-white/10 px-3 py-2 text-sm text-gray-300"
-                                        >
-                                            {item}
-                                        </span>
-                                    ))}
-                                </div>
-                            </div>
+                        
+<div className="mt-10 space-y-10">
+    <div>
+        <h2 className="mb-4 flex items-center gap-3 text-xl font-semibold">
+            <Sparkles size={19} />
+            Key takeaways
+        </h2>
 
-                            <div className="rounded-2xl border border-white/10 bg-[#101010] p-6 sm:p-8">
-                                <h2 className="mb-6 text-xl font-semibold">
-                                    Outcomes
-                                </h2>
-                                <ul className="space-y-4">
-                                    {selectedEvent.outcomes.map((item) => (
-                                        <li
-                                            key={item}
-                                            className="flex gap-3 text-sm leading-relaxed text-gray-400"
-                                        >
-                                            <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-white" />
-                                            {item}
-                                        </li>
-                                    ))}
-                                </ul>
-                            </div>
-                        </div>
+        <ul className="flex flex-wrap gap-3">
+            {selectedEvent.takeaways.map((item) => (
+                <li
+                    key={item}
+                    className="text-sm text-gray-300"
+                >
+                    {item}
+                </li>
+            ))}
+        </ul>
+    </div>
+
+    <div>
+        <h2 className="mb-4 text-xl font-semibold">
+            Outcomes
+        </h2>
+
+        <ul className="space-y-3">
+            {selectedEvent.outcomes.map((item) => (
+                <li
+                    key={item}
+                    className="flex gap-3 text-sm leading-relaxed text-gray-400"
+                >
+                    <span className="mt-2 h-1.5 w-1.5 shrink-0 rounded-full bg-white" />
+                    {item}
+                </li>
+            ))}
+        </ul>
+    </div>
+</div>
+
                     </motion.section>
                 )}
             </div>
